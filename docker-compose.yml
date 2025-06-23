@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    networks:
+      - chat-net
+
+  client:
+    build: ./chat-example-client
+    ports:
+      - "3000:3000"
+    networks:
+      - chat-net
+    depends_on:
+      - server
+
+networks:
+  chat-net:
+    driver: bridge
