@@ -18,9 +18,9 @@ router.get('/api/message/:chatRoomId', async(req, res) => {
 
 //send message by sender id
 router.post('/api/message', async(req, res) => {
-    const { senderId, chatroomId, content } = req.body;
+    const { senderId, chatRoomId, content } = req.body;
     
-    if (!senderId || !chatroomId || !content) {
+    if (!senderId || !chatRoomId || !content) {
         return res.status(400).json({ error: 'Missing required failed' });
     }
     
