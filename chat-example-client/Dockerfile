@@ -17,3 +17,5 @@ COPY --from=build /app/build /usr/share/nginx/html
 # Copy custom Nginx config (optional)
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+
+#  /api => proxy => 8080

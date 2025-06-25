@@ -1,51 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
-  const socketRef = useRef(null);
+  const apiUrl = "http://localhost:8080";
 
   useEffect(() => {
-    // Connect to WebSocket server
-    socketRef.current = new WebSocket("ws://localhost:8080/ws");
-
-    socketRef.current.onopen = () => {
-      console.log("Connected to WebSocket server");
-    };
-
-    socketRef.current.onmessage = (event) => {
-      // If the message is a Blob, convert it to text
-      if (event.data instanceof Blob) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setChat((prev) => [...prev, reader.result]);
-        };
-        reader.readAsText(event.data);
-      } else {
-        setChat((prev) => [...prev, event.data]);
-      }
-    };
-    
-
-    socketRef.current.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    socketRef.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    return () => {
-     // socketRef.current.close();
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (message.trim()) {
-      socketRef.current.send(message);
-      setMessage("");
-    }
-  };
+    fetch(`${apiUrl}/api/message/685b2b3215ef9e04b6152e95`)
+      .then(res => res.json())
+      .then(data => setChat(data))
+      .catch(err => console.error(err));
+  }, [apiUrl]);
 
   return (
     <div style={{ padding: "2rem", fontFamily: "Arial" }}>
@@ -62,7 +27,7 @@ function App() {
       >
         {chat.map((msg, i) => (
           <div key={i} style={{ marginBottom: "0.5rem" }}>
-            <strong>User:</strong> {msg}
+            <strong>{msg.senderId}</strong> {msg.content}
           </div>
         ))}
       </div>
@@ -73,7 +38,7 @@ function App() {
         onChange={(e) => setMessage(e.target.value)}
         style={{ width: "70%", padding: "0.5rem", marginRight: "1rem" }}
       />
-      <button onClick={sendMessage} style={{ padding: "0.5rem 1rem" }}>
+      <button onClick={() => {}} style={{ padding: "0.5rem 1rem" }}>
         Send
       </button>
     </div>

@@ -16,7 +16,10 @@ services:
       - chat-net
     depends_on:
       - server
+  
+
 
 networks:
   chat-net:
     driver: bridge
+
