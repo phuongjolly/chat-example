@@ -4,6 +4,7 @@ const http = require('http');
 const WebSocket = require('ws');
 require("./db")
 const messageRoutes = require('./routes/message');
+const userRouters = require("./routes/user");
 const InMemoryPubSub = require('./InMemoryPubSub');
 
 const pubsub = new InMemoryPubSub()
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(messageRoutes(pubsub));
+app.use(userRouters)
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
