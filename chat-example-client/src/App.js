@@ -19,7 +19,6 @@ function App() {
   useEffect(() => {
     // Connect to WebSocket server
     socketRef.current = new WebSocket("ws://localhost:8080/ws");
-
     socketRef.current.onopen = () => {
       console.log("Connected to WebSocket server ss");
     };
@@ -88,6 +87,7 @@ function App() {
       });
 
       if (!res.ok) throw new Error("Failed to send message");
+      setMessage("");
 
     } catch(error) {
       console.error("Error sending message:", error);
